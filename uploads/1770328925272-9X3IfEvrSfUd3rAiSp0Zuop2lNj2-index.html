@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tentang Kita</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f4f7;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    header {
+      background: url('https://files.catbox.moe/8qxfxl.jpeg') center/cover no-repeat;
+      color: #fff;
+      padding: 60px 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+    }
+
+    header h1,
+    header p {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.08);
+    }
+
+    .meta {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 18px;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      background: #ff69b4;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .music-player {
+      margin: 16px 0;
+      display: flex;
+      gap: 10px;
+    }
+
+    .music-player button {
+      background: #ff6fae;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .typing {
+      white-space: pre-wrap;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .cursor {
+      display: inline-block;
+      margin-left: 2px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%,50% { opacity: 1; }
+      51%,100% { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Tentang Kita</h1>
+  <p>Berita ringan | Gaya santai | Apa adanya</p>
+</header>
+
+<div class="container">
+  <div class="meta">
+    Dipublikasikan: 6 Februari 2026
+    <div class="music-player">
+      <audio id="audio" src="https://files.catbox.moe/se5h8v.mpeg"></audio>
+      <button onclick="playAudio()">Play</button>
+      <button onclick="pauseAudio()">Pause</button>
+    </div>
+  </div>
+
+  <!-- TYPING PARAGRAPH -->
+  <p class="typing" data-text="hii, disinii akuu ingin menceritakan cewe akuu yangg kutemui 'arissha', hanya terdengar biasa kan kalau di orang?, tapi di aku diaa adalahh suatuu yang spesiall, suatuu yangg kuu anggap sangat penting dan berartii dii hidupp akuu"></p>
+
+  <p class="typing" data-text="dann hall yangg palingg kusukaa darii dirii nyaa adalahh dengann caraa diaa mengekspresikan dirii nyaa, senyumm tipiss nyaa, tatapann mataa yangg indahh, sertaa gesturr kecill yang spontan yangg ngasihh kesann lucuu yangg muncull dengann sendirii nyaa, akuu mencintaii nyaa darii cinta, disaat cowo lain saat ini mencintai perempuan hanya karna nafsuu nyaa"></p>
+
+  <p class="typing" data-text="walaupunn jarakk kitaa yangg sangatt jauhh, tapii kitaa percayaa, suatu saat nanti kita akan bertemu, dann akuu akann usahakan ituu"></p>
+
+  <!-- AFTER TYPING -->
+  <p class="after-typing hidden">
+    sayaang i want tell u something, i really really love you so much tolong jangan berubah selama lamanya yaaaa aku bener bener nyaman sama sikap dan sifat kamu, jangan sampai kamu berubah cuman karna seseorang yaa aku harap
+  </p>
+
+  <p class="after-typing hidden">
+    aku ngerasa beruntung banget punya kamu. kamu nggak harus cape cape bersaing sama siapapun, di mata aku kamu selalu menang. bahkan kalau dunia nyuruh aku milih, aku bakal tetep milih kamu tanpa ragu.
+    <br><br>
+    thank u for being in my life ..
+  </p>
+</div>
+
+<footer>
+  © 2026 Wapp
+</footer>
+
+<script>
+  const audio = document.getElementById('audio');
+
+  let typingStarted = false;
+
+  const typingEls = document.querySelectorAll('.typing');
+  const afterEls = document.querySelectorAll('.after-typing');
+
+  let elIndex = 0;
+  let charIndex = 0;
+
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  cursor.textContent = '|';
+
+  function playAudio() {
+    audio.play();
+    if (!typingStarted) {
+      typingStarted = true;
+      typingEls[0].appendChild(cursor);
+      typeParagraph();
+    }
+  }
+
+  function pauseAudio() {
+    audio.pause();
+  }
+
+  function getSpeed(i) {
+    if (i === 0) return 65;
+    if (i === 1) return 50;
+    return 45;
+  }
+
+  function typeParagraph() {
+    if (elIndex >= typingEls.length) {
+      cursor.remove();
+      afterEls.forEach(p => p.classList.remove('hidden'));
+      return;
+    }
+
+    const el = typingEls[elIndex];
+    const text = el.dataset.text;
+    const speed = getSpeed(elIndex);
+
+    if (charIndex < text.length) {
+      cursor.remove();
+      el.textContent += text[charIndex];
+      el.appendChild(cursor);
+      charIndex++;
+      setTimeout(typeParagraph, speed);
+    } else {
+      cursor.remove();
+      elIndex++;
+      charIndex = 0;
+      if (typingEls[elIndex]) typingEls[elIndex].appendChild(cursor);
+      setTimeout(typeParagraph, 800);
+    }
+  }
+</script>
+
+</body>
+</html>
